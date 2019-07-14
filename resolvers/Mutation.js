@@ -3,14 +3,12 @@ const { User } = require('../models');
 // Mutation Resolvers
 
 // Add a user
-addUser = async (_, args) => {
+addUser = async (_, { id, userName, email, password }) => {
   try {
-    let user = await User.findOne({ email: args.email });
-    if (user) throw new Error(`${args.email} has already been registered`);
+    let user = await User.findOne({ email: email });
+    if (user) throw new Error(`${email} has already been registered`);
 
-    user = await User.create(args);
-
-    console.log(user);
+    user = await User.create({ id, userName, email, password });
 
     return user;
   } catch (e) {
@@ -19,12 +17,12 @@ addUser = async (_, args) => {
 };
 
 // Delete a user
-deleteUser = async (_, args) => {
+deleteUser = async (_, { email }) => {
   try {
-    let user = await User.findOne({ email: args.email });
-    if (!user) throw new Error(`${args.email} doesn't exist.`);
+    let user = await User.findOne({ email });
+    if (!user) throw new Error(`${email} doesn't exist.`);
 
-    user = await User.findOneAndDelete({ email: args.email });
+    user = await User.findOneAndDelete({ email });
 
     return user;
   } catch (e) {
