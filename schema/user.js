@@ -7,6 +7,7 @@ const user = gql`
     id: ID!
     userName: String
     email: String
+    password: String
   }
 `;
 
