@@ -16,6 +16,20 @@ addUser = async (_, { id, userName, email, password }) => {
   }
 };
 
+// Update a user (email)
+updateUser = async (_, { id, email }) => {
+  try {
+    let user = await User.findOne({ _id: id });
+    if (!user) throw new Error('This user does not exist!');
+
+    user = await User.findOneAndUpdate({ _id: id }, { email: email });
+
+    return user;
+  } catch (e) {
+    return e;
+  }
+};
+
 // Delete a user
 deleteUser = async (_, { email }) => {
   try {
@@ -32,5 +46,6 @@ deleteUser = async (_, { email }) => {
 
 module.exports = {
   addUser,
+  updateUser,
   deleteUser
 };
