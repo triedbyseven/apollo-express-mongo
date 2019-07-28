@@ -1,4 +1,5 @@
 const express = require('express');
+const { getUser } = require('./utils/getUser');
 const { ApolloServer } = require('apollo-server-express');
 
 require('./config');
@@ -19,7 +20,17 @@ const resolvers = {
 
 const server = new ApolloServer({
   typeDefs: [query, mutation, user],
-  resolvers
+  resolvers,
+  context: ({ req }) => {
+    // Get the user token from the headers
+    const tokenWithBearer = req.headers.authorization || '';
+    const token = tokenWithBearer.split(' ')[1];
+
+    // Return user from token
+    const user = getUser(token);
+
+    return user;
+  }
 });
 
 const app = express();
