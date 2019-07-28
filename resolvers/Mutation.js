@@ -2,15 +2,17 @@ const { User } = require('../models');
 
 // Mutation Resolvers
 
-// Add a user
-addUser = async (_, { id, userName, email, password }) => {
+// Add & register a user
+addUser = async (_, { userName, email, password }) => {
   try {
     let user = await User.findOne({ email: email });
     if (user) throw new Error(`${email} has already been registered`);
 
-    user = await User.create({ id, userName, email, password });
+    user = await User.create({ userName, email, password });
 
-    return user;
+    const token = await jwt.sign({ id: user._id, email: user.email }, '123456');
+
+    return { user, token };
   } catch (e) {
     return e;
   }
