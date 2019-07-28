@@ -4,7 +4,7 @@ const { gql } = require('apollo-server-express');
 
 const mutation = gql`
   type Mutation {
-    addUser(userName: String!, email: String!, password: String!): User
+    addUser(userName: String!, email: String!, password: String!): AuthPayLoad!
     updateUser(id: ID!, email: String!): User
     deleteUser(email: String!): User
   }
