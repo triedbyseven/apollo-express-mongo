@@ -4,10 +4,15 @@ const { gql } = require('apollo-server-express');
 
 const user = gql`
   type User {
-    id: ID!
+    id: ID
     userName: String
     email: String
     password: String
+  }
+
+  type AuthPayLoad {
+    token: String
+    user: User
   }
 `;
 
