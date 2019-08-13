@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User, Movie } = require('../models');
 
 // Query Resolvers
 
@@ -7,9 +7,26 @@ getAllUsers = async (_, args, { email }) => {
   // Verify user (by email)
   if (!email) throw new Error('Not Authenticated');
 
-  return await User.find({}).exec();
+  try {
+    const response = await User.find()
+      .populate('movies')
+      .exec();
+
+    return response;
+  } catch (err) {
+    return err;
+  }
+};
+
+// Return all user movies
+getAllMovies = async (_, args, { id, email }) => {
+  // Verify user (by email)
+  if (!email) throw new Error('Not Authenticated');
+
+  return await Movie.find({ userId: id }).exec();
 };
 
 module.exports = {
-  getAllUsers
+  getAllUsers,
+  getAllMovies
 };
