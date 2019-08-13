@@ -12,6 +12,7 @@ const Mutation = require('./resolvers/Mutation');
 const { query } = require('./schema/query');
 const { mutation } = require('./schema/mutation');
 const { user } = require('./schema/user');
+const { movie } = require('./schema/movie');
 
 const resolvers = {
   Query,
@@ -19,7 +20,7 @@ const resolvers = {
 };
 
 const server = new ApolloServer({
-  typeDefs: [query, mutation, user],
+  typeDefs: [query, mutation, user, movie],
   resolvers,
   context: ({ req }) => {
     // Get the user token from the headers
