@@ -4,16 +4,22 @@ const { Schema } = mongoose;
 const userSchema = new Schema({
   userName: String,
   email: String,
-  password: String
+  password: String,
+  movies: [{ type: Schema.Types.ObjectId, ref: 'Movie' }]
 });
 
-const tagSchema = new Schema({
-  name: String
+const movieSchema = new Schema({
+  userId: { type: Schema.Types.ObjectId, ref: 'User' },
+  title: String,
+  genre: String,
+  releaseDate: String
 });
 
-const User = mongoose.model('user', userSchema);
-const Tags = mongoose.model('tags', tagSchema);
+const User = mongoose.model('User', userSchema);
+const Movie = mongoose.model('Movie', movieSchema);
 
 module.exports = {
-  User
+  User,
+  Movie
+  // Tag
 };
