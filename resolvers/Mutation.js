@@ -1,4 +1,5 @@
-const { User } = require('../models');
+const { User, Movie } = require('../models');
+const jwt = require('jsonwebtoken');
 
 // Mutation Resolvers
 
@@ -46,8 +47,38 @@ deleteUser = async (_, { email }) => {
   }
 };
 
+// Add a movie
+addMovie = async (_, { userId, title, genre, releaseDate }, { email }) => {
+  // Find current User
+  const user = await User.findOne({ email: email });
+
+  // Create a Movie
+  const movie = await Movie.create({ userId, title, genre, releaseDate });
+
+  // Push our movie to the user in movies array.
+  user.movies.push(movie);
+
+  // Save Movie
+  user.save();
+
+  return movie;
+};
+
+// Delete a movie
+deleteMovie = async (_, { id }) => {
+  try {
+    const movie = await Movie.findOneAndDelete({ _id: id });
+
+    return movie;
+  } catch (error) {
+    return error;
+  }
+};
+
 module.exports = {
   addUser,
+  addMovie,
   updateUser,
-  deleteUser
+  deleteUser,
+  deleteMovie
 };
