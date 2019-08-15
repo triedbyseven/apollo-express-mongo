@@ -3,8 +3,23 @@ const jwt = require('jsonwebtoken');
 
 // Mutation Resolvers
 
+// Log in user
+loginUser = async (_, { userName }) => {
+  try {
+    const user = await User.findOne({ userName: userName });
+
+    if (!user) throw new Error('This user has not been registered.');
+
+    const token = await jwt.sign({ id: user._id, email: user.email }, '123456');
+
+    return { user, token };
+  } catch (error) {
+    return error;
+  }
+};
+
 // Add & register a user
-addUser = async (_, { userName, email, password }) => {
+registerUser = async (_, { userName, email, password }) => {
   try {
     let user = await User.findOne({ email: email });
     if (user) throw new Error(`${email} has already been registered`);
@@ -76,7 +91,8 @@ deleteMovie = async (_, { id }) => {
 };
 
 module.exports = {
-  addUser,
+  loginUser,
+  registerUser,
   addMovie,
   updateUser,
   deleteUser,
