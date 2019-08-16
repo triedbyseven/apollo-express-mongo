@@ -4,7 +4,12 @@ const { gql } = require('apollo-server-express');
 
 const mutation = gql`
   type Mutation {
-    addUser(userName: String!, email: String!, password: String!): AuthPayLoad!
+    loginUser(userName: String, email: String, password: String!): AuthPayLoad!
+    registerUser(
+      userName: String!
+      email: String!
+      password: String!
+    ): AuthPayLoad!
     addMovie(
       userId: ID!
       title: String!
