@@ -1,10 +1,11 @@
 const { User, Movie } = require('../models');
+const jwt = require('jsonwebtoken');
 
 // Query Resolvers
 
 // Return all users
 getAllUsers = async (_, args, { email }) => {
-  // Verify user (by email)
+  // Verify user is logged in.
   if (!email) throw new Error('Not Authenticated');
 
   try {
@@ -20,8 +21,8 @@ getAllUsers = async (_, args, { email }) => {
 
 // Return all user movies
 getAllMovies = async (_, args, { id, email }) => {
-  // Verify user (by email)
-  if (!email) throw new Error('Not Authenticated');
+  // Verify user is logged in.
+  if (!email) throw new Error('Not Authenticated.');
 
   return await Movie.find({ userId: id }).exec();
 };
