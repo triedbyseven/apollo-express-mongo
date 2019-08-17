@@ -1,5 +1,4 @@
 const { User, Movie } = require('../models');
-const jwt = require('jsonwebtoken');
 
 // Query Resolvers
 
