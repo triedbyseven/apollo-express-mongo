@@ -1,5 +1,6 @@
 const { User, Movie } = require('../models');
 const jwt = require('jsonwebtoken');
+const { hashPassword } = require('../utils/hashPassword');
 
 // Mutation Resolvers
 
@@ -22,11 +23,14 @@ loginUser = async (_, { userName }) => {
 };
 
 // Add & register a user
-registerUser = async (_, { userName, email, password }) => {
+registerUser = async (_, { userName, email, password: userPassword }) => {
   try {
     // Check if user is already registered. If registered throw error.
     let user = await User.findOne({ email: email });
     if (user) throw new Error(`${email} has already been registered`);
+
+    // Hash password
+    const password = hashPassword(userPassword);
 
     // Create new user
     user = await User.create({ userName, email, password });
